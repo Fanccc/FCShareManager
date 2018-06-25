@@ -106,7 +106,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
 /**
  *  三方登录
  */
-- (void)threeWithType:(UMSocialPlatformType)type vc:(UIViewController *)vc success:(void(^)(UMSocialUserInfoResponse *data))success failed:(void(^)(NSError *error))failed{
+- (void)quickLoginWithType:(UMSocialPlatformType)type vc:(UIViewController *)vc success:(void(^)(UMSocialUserInfoResponse *data))success failed:(void(^)(NSError *error))failed{
     [[UMSocialManager defaultManager] getUserInfoWithPlatform:type currentViewController:vc completion:^(id result, NSError *error) {
         if(!error){
             UMSocialUserInfoResponse *authresponse = result;

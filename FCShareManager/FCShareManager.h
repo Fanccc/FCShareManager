@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, FCShareType){
 /**
  *  三方登录
  */
-- (void)threeWithType:(UMSocialPlatformType)type vc:(UIViewController *)vc success:(void(^)(UMSocialUserInfoResponse *data))success failed:(void(^)(NSError *error))failed;
+- (void)quickLoginWithType:(UMSocialPlatformType)type vc:(UIViewController *)vc success:(void(^)(UMSocialUserInfoResponse *data))success failed:(void(^)(NSError *error))failed;
 
 /**
  *  移除授权

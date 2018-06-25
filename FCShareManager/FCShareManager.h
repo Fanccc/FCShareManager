@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, FCShareType){
     FCShareTypeMusic, //音乐
     FCShareTypeVideo, //视频
     FCShareTypeText, //文本
+    FCShareTypeMiniProgram //小程序
 };
 
 @interface FCShareManager : NSObject
@@ -66,14 +67,17 @@ typedef NS_ENUM(NSInteger, FCShareType){
 /**
  根据type生成指定 message object
  @param shareType FCShareType
- @param url 网页/音乐/视频 url
+ @param url 网页/音乐/视频/小程序低版本兼容 url
  @param title 标题 / 纯文本分享时的内容
  @param desc 描述
  @param thumImage 缩略图
  @param shareImage 分享纯图片时的图片
+ @param userName userName
+ @param path 页面路径
+ @param hdImageData 小程序新版本的预览图 < 128k
  @return messageObject
  */
-- (UMSocialMessageObject *)createMessageObjectForType:(FCShareType)shareType url:(NSString *)url title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage shareImage:(id)shareImage;
+- (UMSocialMessageObject *)createMessageObjectForType:(FCShareType)shareType url:(NSString *)url title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage shareImage:(id)shareImage uName:(NSString *)userName path:(NSString *)path hdImageData:(NSData *)hdImageData;
 
 //网页
 - (UMSocialMessageObject *)createWebPageObject:(NSString *)webUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage;
@@ -87,5 +91,19 @@ typedef NS_ENUM(NSInteger, FCShareType){
 - (UMSocialMessageObject *)createVideoObject:(NSString *)videoUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage;
 //纯文本
 - (UMSocialMessageObject *)createTextObjectTitle:(NSString *)title;
+
+/**
+ 小程序
+
+ @param title title
+ @param desc desc
+ @param thumbImage thumbImage
+ @param webpageUrl 低版本url
+ @param userName userName
+ @param path 页面路径
+ @param hdImageData 小程序新版本的预览图 < 128k
+ @return UMSocialMessageObject
+ */
+- (UMSocialMessageObject *)createMiniProgrameObjectTitle:(NSString *)title desc:(NSString *)desc thumbImage:(id)thumbImage webpageUrl:(NSString *)webpageUrl userName:(NSString *)userName path:(NSString *)path hdImageData:(NSData *)hdImageData;
 
 @end

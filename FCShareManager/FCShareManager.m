@@ -67,7 +67,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
 }
 
 - (void)shareWebMessage:(NSString *)url title:(NSString *)title desc:(NSString *)desc thumbImage:(id)thumbImage onVC:(UIViewController *)currentController success:(void(^)(id))success failed:(void(^)(NSError *))failed{
-    UMSocialMessageObject *message = [self createMessageObjectForType:FCShareTypeWebPage url:url title:title desc:desc thumImage:thumbImage shareImage:nil];
+    UMSocialMessageObject *message = [self createMessageObjectForType:FCShareTypeWebPage url:url title:title desc:desc thumImage:thumbImage shareImage:nil uName:nil path:nil hdImageData:nil];
     [self shareMessageObject:message onVC:currentController success:success failed:failed];
 }
 
@@ -142,7 +142,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
 
 
 //============ 分享元素创建 ========//
-- (UMSocialMessageObject *)createMessageObjectForType:(FCShareType)shareType url:(NSString *)url title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage shareImage:(id)shareImage{
+- (UMSocialMessageObject *)createMessageObjectForType:(FCShareType)shareType url:(NSString *)url title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage shareImage:(id)shareImage uName:(NSString *)userName path:(NSString *)path hdImageData:(NSData *)hdImageData{
     UMSocialMessageObject *object = nil;
     switch (shareType) {
         case FCShareTypeWebPage:
@@ -163,6 +163,9 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
         case FCShareTypeText:
             object = [self createTextObjectTitle:title];
             break;
+        case FCShareTypeMiniProgram:
+            object = [self createMiniProgrameObjectTitle:title desc:desc thumbImage:thumImage webpageUrl:url userName:userName path:path hdImageData:hdImageData];
+            break;
         default:{
             NSString *errorInfo = [NSString stringWithFormat:@"shareType == %ld , 这不是一个合理的分享类型",shareType];
             NSAssert(NO, errorInfo);
@@ -177,7 +180,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
  */
 - (UMSocialMessageObject *)createWebPageObject:(NSString *)webUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage{
     
-    UMSocialMessageObject *messageObject = [self baseMessageObject];
+    UMSocialMessageObject *messageObject = [self messageObject];
     //创建网页内容对象
     UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:desc thumImage:thumImage];
     //设置网页地址
@@ -193,7 +196,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
  */
 - (UMSocialMessageObject *)createImageObject:(id)shareImage thumImage:(id)thumImage{
     //创建分享消息对象
-    UMSocialMessageObject *messageObject = [self baseMessageObject];
+    UMSocialMessageObject *messageObject = [self messageObject];
     
     //创建图片内容对象
     UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
@@ -212,7 +215,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
  */
 - (UMSocialMessageObject *)createImageAndTextObject:(id)shareImage text:(NSString *)text thumImage:(id)thumImage{
     //创建分享消息对象
-    UMSocialMessageObject *messageObject = [self baseMessageObject];
+    UMSocialMessageObject *messageObject = [self messageObject];
     messageObject.text = text;
 
     //创建图片内容对象
@@ -232,7 +235,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
  */
 - (UMSocialMessageObject *)createMusicObject:(NSString *)musicUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage{
     //创建分享消息对象
-    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    UMSocialMessageObject *messageObject = [self messageObject];
     //创建音乐内容对象
     UMShareMusicObject *shareObject = [UMShareMusicObject shareObjectWithTitle:title descr:desc thumImage:thumImage];
     //设置音乐网页播放地址
@@ -247,7 +250,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
  */
 - (UMSocialMessageObject *)createVideoObject:(NSString *)videoUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage{
     //创建分享消息对象
-    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    UMSocialMessageObject *messageObject = [self messageObject];
     //创建视频内容对象
     UMShareVideoObject *shareObject = [UMShareVideoObject shareObjectWithTitle:title descr:desc thumImage:thumImage];
     //设置视频网页播放地址
@@ -262,14 +265,32 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
  */
 - (UMSocialMessageObject *)createTextObjectTitle:(NSString *)title{
     //创建分享消息对象
-    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    UMSocialMessageObject *messageObject = [self messageObject];
     //设置文本
     messageObject.text = title;
     return messageObject;
 }
 
+/**
+ 小程序
+ */
+- (UMSocialMessageObject *)createMiniProgrameObjectTitle:(NSString *)title desc:(NSString *)desc thumbImage:(id)thumbImage webpageUrl:(NSString *)webpageUrl userName:(NSString *)userName path:(NSString *)path hdImageData:(NSData *)hdImageData{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [self messageObject];
+    UMShareMiniProgramObject *shareObject = [UMShareMiniProgramObject shareObjectWithTitle:title descr:desc thumImage:thumbImage];
+    //兼容低版本url
+    shareObject.webpageUrl = webpageUrl;
+    shareObject.userName = userName;
+    //页面路径
+    shareObject.path = path;
+    messageObject.shareObject = shareObject;
+    shareObject.hdImageData = hdImageData;
+    shareObject.miniProgramType = UShareWXMiniProgramTypeRelease; // 可选体验版和开发板
+    return messageObject;
+}
 
-- (UMSocialMessageObject *)baseMessageObject{
+
+- (UMSocialMessageObject *)messageObject{
     return [UMSocialMessageObject messageObject];
 }
 

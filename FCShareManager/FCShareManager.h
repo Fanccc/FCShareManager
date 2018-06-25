@@ -11,9 +11,15 @@
 #import <UShareUI/UShareUI.h>
 #import <UMCommon/UMCommon.h>
 
-/**
- *  UM6+
- */
+typedef NS_ENUM(NSInteger, FCShareType){
+    FCShareTypeWebPage,  //网页
+    FCShareTypeImage,  //图片
+    FCShareTypeImageAndText, //图文
+    FCShareTypeMusic, //音乐
+    FCShareTypeVideo, //视频
+    FCShareTypeText, //文本
+};
+
 @interface FCShareManager : NSObject
 
 /**
@@ -22,24 +28,23 @@
 + (FCShareManager *)sharedInstance;
 
 /**
- *  有UI分享
+ * 分享WebPage 平常可能绝大多数均为网页分享
  */
-- (void)shareUrl:(NSString* )url
-      shareTitle:(NSString* )shareTitle
-       shareText:(NSString* )shareText
-      shareImage:(id)shareImageURL
-            OnVC:(UIViewController *)controller
-         success:(void(^)(void))success;
+- (void)shareWebMessage:(NSString *)url title:(NSString *)title desc:(NSString *)desc thumbImage:(id)thumbImage onVC:(UIViewController *)currentController success:(void(^)(id))success failed:(void(^)(NSError *))failed;
 
 /**
- *  无UI分享,调用底层方法
+ * 使用umeng提供的UI
  */
-- (void)noHaveUIShareUrl:(NSString *)url shareTitle:(NSString* )shareTitle shareText:(NSString* )shareText shareImage:(id)shareImageURL OnVC:(UIViewController *)controller type:(UMSocialPlatformType)type success:(void(^)(void))success;
+- (void)shareMessageObject:(UMSocialMessageObject *)messageObject onVC:(UIViewController *)currentController success:(void(^)(id))success failed:(void(^)(NSError *))failed;
+/**
+ * 指定平台分享,不使用umeng提供的UI
+ */
+- (void)shareMessageObject:(UMSocialMessageObject *)messageObject platform:(UMSocialPlatformType)platform onVC:(UIViewController *)currentController success:(void (^)(id))success failed:(void (^)(NSError *))failed;
 
 /**
  *  三方登录
  */
-- (void)threeWithType:(UMSocialPlatformType)type vc:(UIViewController *)vc success:(void(^)(UMSocialUserInfoResponse *data))success failed:(void(^)(NSString *msg))failed;
+- (void)threeWithType:(UMSocialPlatformType)type vc:(UIViewController *)vc success:(void(^)(UMSocialUserInfoResponse *data))success failed:(void(^)(NSError *error))failed;
 
 /**
  *  移除授权
@@ -56,6 +61,31 @@
  */
 - (BOOL)qqInstalled;
 
+#pragma mark - create message object
 
+/**
+ 根据type生成指定 message object
+ @param shareType FCShareType
+ @param url 网页/音乐/视频 url
+ @param title 标题 / 纯文本分享时的内容
+ @param desc 描述
+ @param thumImage 缩略图
+ @param shareImage 分享纯图片时的图片
+ @return messageObject
+ */
+- (UMSocialMessageObject *)createMessageObjectForType:(FCShareType)shareType url:(NSString *)url title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage shareImage:(id)shareImage;
+
+//网页
+- (UMSocialMessageObject *)createWebPageObject:(NSString *)webUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage;
+//图片
+- (UMSocialMessageObject *)createImageObject:(id)shareImage thumImage:(id)thumImage;
+//图文(仅限微博)
+- (UMSocialMessageObject *)createImageAndTextObject:(id)shareImage text:(NSString *)text thumImage:(id)thumImage;
+//音乐
+- (UMSocialMessageObject *)createMusicObject:(NSString *)musicUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage;
+//视频
+- (UMSocialMessageObject *)createVideoObject:(NSString *)videoUrl title:(NSString *)title desc:(NSString *)desc thumImage:(id)thumImage;
+//纯文本
+- (UMSocialMessageObject *)createTextObjectTitle:(NSString *)title;
 
 @end

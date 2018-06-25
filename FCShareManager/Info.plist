@@ -25,17 +25,17 @@
 			<string>wechat</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wx36373faa351f4189</string>
+				<string>wxdc1e388c3822c80b</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>qq</string>
+			<string>tencent</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>qqschemes</string>
+				<string>tencent1105821097</string>
 			</array>
 		</dict>
 		<dict>
@@ -56,6 +56,16 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>FCApp</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>qq</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>QQ41e97da9</string>
 			</array>
 		</dict>
 	</array>
@@ -167,6 +177,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App需要您的同意,才能访问相册</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -188,7 +200,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>App需要您的同意,才能访问相册</string>
 </dict>
 </plist>

@@ -11,13 +11,13 @@
 #import "WXApi.h"
 
 NSString *const UMAppKey = @"580f132c8f4a9d35a4000499";
-NSString *const WeChatAppid = @"wx36373faa351f4189";
-NSString *const WeChatAppSecret = @"f1d64978c8231fda58b7d3ee74b3a3b5";
-NSString *const QQAppId = @"";
+NSString *const WeChatAppid = @"wxdc1e388c3822c80b";
+NSString *const WeChatAppSecret = @"3baf1193c85774b3fd9d18447d76cab0";
+NSString *const QQAppId = @"1105821097";
 NSString *const QQAppKey = @"";
-NSString *const SinaWBAppid = @"";
-NSString *const SinaWBAppSecret = @"";
-NSString *const SinaWBURL = @"";
+NSString *const SinaWBAppid = @"3921700954";
+NSString *const SinaWBAppSecret = @"04b48b094faeb16683c32669824ebdad";
+NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
 
 @interface FCShareManager ()
 
@@ -47,6 +47,8 @@ NSString *const SinaWBURL = @"";
 #endif
         //设置友盟appkey
         [[UMSocialManager defaultManager] setUmSocialAppkey:UMAppKey];
+        
+        //是否强制使用https
         [UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
         
         NSLog(@"UMeng social version: %@", [UMSocialGlobal umSocialSDKVersion]);

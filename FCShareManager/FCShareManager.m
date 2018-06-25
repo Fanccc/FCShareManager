@@ -10,7 +10,7 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "WXApi.h"
 
-NSString *const UMAppKey = @"580f132c8f4a9d35a4000499";
+NSString *const UMAppKey = @"571735b267e58e087a000345";
 NSString *const WeChatAppid = @"wxdc1e388c3822c80b";
 NSString *const WeChatAppSecret = @"3baf1193c85774b3fd9d18447d76cab0";
 NSString *const QQAppId = @"1105821097";
@@ -39,14 +39,15 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
 
 - (instancetype)init{
     if(self = [super init]){
+        
+        [UMConfigure initWithAppkey:UMAppKey channel:nil];
+        
         //打开日志
 #ifdef DEBUG
-        [[UMSocialManager defaultManager] openLog:YES];
+        [UMConfigure setLogEnabled:YES];
 #else
-        [[UMSocialManager defaultManager] openLog:NO];
+        [UMConfigure setLogEnabled:NO];
 #endif
-        //设置友盟appkey
-        [[UMSocialManager defaultManager] setUmSocialAppkey:UMAppKey];
         
         //是否强制使用https
         [UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
@@ -57,7 +58,7 @@ NSString *const SinaWBURL = @"https://sns.whalecloud.com/sina2/callback";
         [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WeChatAppid appSecret:WeChatAppSecret redirectURL:SinaWBURL];
         
         //设置分享到QQ互联的appId和appKey
-        [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:QQAppId  appSecret:QQAppKey redirectURL:SinaWBURL];
+        [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:QQAppId  appSecret:QQAppKey redirectURL:@"http://mobile.umeng.com/social"];
         
         //设置新浪的appId和appKey
         [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:SinaWBAppid  appSecret:SinaWBAppSecret redirectURL:SinaWBURL];

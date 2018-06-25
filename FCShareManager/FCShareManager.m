@@ -10,9 +10,9 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "WXApi.h"
 
-NSString *const UMAppKey = @"";
-NSString *const WeChatAppid = @"";
-NSString *const WeChatAppSecret = @"";
+NSString *const UMAppKey = @"580f132c8f4a9d35a4000499";
+NSString *const WeChatAppid = @"wx36373faa351f4189";
+NSString *const WeChatAppSecret = @"f1d64978c8231fda58b7d3ee74b3a3b5";
 NSString *const QQAppId = @"";
 NSString *const QQAppKey = @"";
 NSString *const SinaWBAppid = @"";
@@ -40,7 +40,11 @@ NSString *const SinaWBURL = @"";
 - (instancetype)init{
     if(self = [super init]){
         //打开日志
+#ifdef DEBUG
+        [[UMSocialManager defaultManager] openLog:YES];
+#else
         [[UMSocialManager defaultManager] openLog:NO];
+#endif
         //设置友盟appkey
         [[UMSocialManager defaultManager] setUmSocialAppkey:UMAppKey];
         [UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
@@ -68,9 +72,10 @@ NSString *const SinaWBURL = @"";
       shareText:(NSString* )shareText
      shareImage:(id)shareImageURL
            OnVC:(UIViewController *)controller
-        success:(void(^)())success{
+        success:(void(^)(void))success{
     
     __weak typeof(self) weakSelf = self;
+    
     [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
         [weakSelf noHaveUIShareUrl:url shareTitle:shareTitle shareText:shareText shareImage:shareImageURL OnVC:controller type:platformType success:success];
     }];
@@ -80,7 +85,7 @@ NSString *const SinaWBURL = @"";
 /**
  *  无UI分享,调用底层方法
  */
-- (void)noHaveUIShareUrl:(NSString *)url shareTitle:(NSString* )shareTitle shareText:(NSString* )shareText shareImage:(id)shareImageURL OnVC:(UIViewController *)controller type:(UMSocialPlatformType)type success:(void(^)())success{
+- (void)noHaveUIShareUrl:(NSString *)url shareTitle:(NSString* )shareTitle shareText:(NSString* )shareText shareImage:(id)shareImageURL OnVC:(UIViewController *)controller type:(UMSocialPlatformType)type success:(void(^)(void))success{
     
     if(type == UMSocialPlatformType_QQ){
         if(![self qqInstalled]){

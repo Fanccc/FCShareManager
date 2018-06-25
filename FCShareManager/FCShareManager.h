@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UMSocialCore/UMSocialCore.h>
+#import <UMShare/UMShare.h>
 #import <UShareUI/UShareUI.h>
 
 /**
@@ -28,12 +28,12 @@
        shareText:(NSString* )shareText
       shareImage:(id)shareImageURL
             OnVC:(UIViewController *)controller
-         success:(void(^)())success;
+         success:(void(^)(void))success;
 
 /**
  *  无UI分享,调用底层方法
  */
-- (void)noHaveUIShareUrl:(NSString *)url shareTitle:(NSString* )shareTitle shareText:(NSString* )shareText shareImage:(id)shareImageURL OnVC:(UIViewController *)controller type:(UMSocialPlatformType)type success:(void(^)())success;
+- (void)noHaveUIShareUrl:(NSString *)url shareTitle:(NSString* )shareTitle shareText:(NSString* )shareText shareImage:(id)shareImageURL OnVC:(UIViewController *)controller type:(UMSocialPlatformType)type success:(void(^)(void))success;
 
 /**
  *  三方登录

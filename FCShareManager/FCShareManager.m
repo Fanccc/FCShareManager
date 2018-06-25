@@ -8,7 +8,7 @@
 
 #import "FCShareManager.h"
 #import <TencentOpenAPI/QQApiInterface.h>
-#import "WXApi.h"
+#import <WXApi.h>
 
 NSString *const UMAppKey = @"571735b267e58e087a000345";
 NSString *const WeChatAppid = @"wxdc1e388c3822c80b";
